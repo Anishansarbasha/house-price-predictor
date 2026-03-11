@@ -82,7 +82,7 @@ function initPredictionForm() {
     const shareBtn = document.getElementById('shareBtn');
 
     // API endpoint
-    const API_URL = 'http://127.0.0.1:5000/predict';
+    const API_URL = 'https://house-price-predictor.onrender.com/predict';
 
     // Location options for one-hot encoding
     const locations = [
@@ -641,7 +641,7 @@ if (contactForm) {
         };
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/contact', {
+            const response = await fetch('https://house-price-predictor.onrender.com/contact', {
                 method : 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body   : JSON.stringify(formData)
@@ -698,7 +698,7 @@ if (submitFeedbackBtn) {
         submitFeedbackBtn.textContent = 'Submitting...';
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/feedback', {
+            const response = await fetch('https://house-price-predictor.onrender.com/feedback', {
                 method : 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body   : JSON.stringify({
