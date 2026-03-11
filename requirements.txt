@@ -2,5 +2,5 @@ flask
 flask-cors
 flask-mail
 numpy
-scikit-learn
+scikit-learn==1.7.2
 gunicorn
