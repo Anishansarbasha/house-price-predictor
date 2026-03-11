@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Price | House Price Predictor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>House Price Predictor</span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="predict.html" class="nav-link active">Predict Price</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="features.html" class="nav-link">Features</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <a href="predict.html" class="nav-cta">Predict Now</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="predict-page">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Predict Your Property Price</h1>
+                <p class="page-subtitle">Enter your property details below to get an instant AI-powered price estimate</p>
+            </div>
+
+            <div class="predict-layout">
+                <div class="predict-form-container">
+                    <form id="predictionForm" class="predict-form">
+                        <!-- Section 1: Property Specifications -->
+                        <div class="form-section">
+                            <h3 class="form-section-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                               Property Specifications
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="totalSqft">Total Square Feet <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        </svg>
+                                        <input type="number" id="totalSqft" name="totalSqft" placeholder="e.g., 1500" required min="300" max="10000">
+                                    </div>
+                                    <span class="input-hint">Range: 300 - 10,000 sq ft</span>
+                                    <span class="error-message" id="totalSqftError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="bedrooms">Number of bedrooms <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 7v11m0-4h18m0 4V7m-9 4v7m-4 0h8"></path>
+                                        </svg>
+                                        <input type="number" id="bedrooms" name="bedrooms" placeholder="e.g., 3" required min="1" max="10">
+                                    </div>
+                                    <span class="input-hint">Range: 1 - 10 bedrooms</span>
+                                    <span class="error-message" id="bedroomsError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="bathrooms">Number of Bathrooms <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M4 12h16M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7M6 12V5a2 2 0 012-2h1"></path>
+                                        </svg>
+                                        <input type="number" id="bathrooms" name="bathrooms" placeholder="e.g., 2" required min="1" max="8">
+                                    </div>
+                                    <span class="input-hint">Range: 1 - 8 bathrooms</span>
+                                    <span class="error-message" id="bathroomsError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="balcony">Number of Balconies <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="11" width="18" height="10" rx="1"></rect>
+                                            <path d="M12 3v8M6 7h12"></path>
+                                        </svg>
+                                        <input type="number" id="balcony" name="balcony" placeholder="e.g., 2" required min="0" max="5">
+                                    </div>
+                                    <span class="input-hint">Range: 0 - 5 balconies</span>
+                                    <span class="error-message" id="balconyError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="floors">Number of Floors <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                                            <line x1="4" y1="8" x2="20" y2="8"></line>
+                                            <line x1="4" y1="14" x2="20" y2="14"></line>
+                                        </svg>
+                                        <input type="number" id="floors" name="floors" placeholder="e.g., 2" required min="1" max="10">
+                                    </div>
+                                    <span class="input-hint">Range: 1 - 10 floors</span>
+                                    <span class="error-message" id="floorsError"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Property Age & Location -->
+                        <div class="form-section">
+                            <h3 class="form-section-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                Property Age & Location
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="ageOfProperty">Age of Property (years) <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                        <input type="number" id="ageOfProperty" name="ageOfProperty" placeholder="e.g., 5" required min="0" max="100">
+                                    </div>
+                                    <span class="input-hint">Range: 0 - 100 years</span>
+                                    <span class="error-message" id="ageOfPropertyError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="distanceToLandmark">distanceToLandmark to Landmark (km) <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+                                        </svg>
+                                        <input type="number" id="distanceToLandmark" name="distanceToLandmark" placeholder="e.g., 3.5" required min="0" max="50" step="0.1">
+                                    </div>
+                                    <span class="input-hint">Range: 0 - 50 km</span>
+                                    <span class="error-message" id="distanceToLandmarkError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="location">Location <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path>
+                                            <circle cx="12" cy="10" r="3"></circle>
+                                        </svg>
+                                        <select id="location" name="location" required>
+                                            <option value="" disabled selected>Select location</option>
+                                            <option value="Coimbatore">Coimbatore</option>
+                                            <option value="Erode">Erode</option>
+                                            <option value="Madurai">Madurai</option>
+                                            <option value="Salem">Salem</option>
+                                            <option value="Thanjavur">Thanjavur</option>
+                                            <option value="Thoothukudi">Thoothukudi</option>
+                                            <option value="Tirunelveli">Tirunelveli</option>
+                                            <option value="Trichy">Trichy</option>
+                                            <option value="Vellore">Vellore</option>
+                                        </select>
+                                    </div>
+                                    <span class="error-message" id="locationError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="areaType">Area Type <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                            <polyline points="2 17 12 22 22 17"></polyline>
+                                            <polyline points="2 12 12 17 22 12"></polyline>
+                                        </svg>
+                                        <select id="areaType" name="areaType" required>
+                                            <option value="" disabled selected>Select area type</option>
+                                            <option value="Super built-up">Super built-up</option>
+                                            <option value="Plot area">Plot area</option>
+                                        </select>
+                                    </div>
+                                    <span class="error-message" id="areaTypeError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="availability">Availability Status <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+                                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                        </svg>
+                                        <select id="availability" name="availability" required>
+                                            <option value="" disabled selected>Select availability</option>
+                                            <option value="Ready to Move">Ready to Move</option>
+                                            <option value="Under Construction">Under Construction</option>
+                                        </select>
+                                    </div>
+                                    <span class="error-message" id="availabilityError"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="button" id="loadDemoBtn" class="btn btn-outline">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                </svg>
+                                Load Sample Data
+                            </button>
+                            <button type="button" id="resetBtn" class="btn btn-ghost">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                </svg>
+                                Reset Form
+                            </button>
+                            <button type="submit" id="submitBtn" class="btn btn-primary btn-lg">
+                                <span class="btn-text">Predict Price</span>
+                                <div class="spinner" id="spinner"></div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-container">
+                    <!-- Loading State -->
+                    <div id="loadingSection" class="loading-section hidden">
+                        <div class="loading-card">
+                            <div class="loading-spinner-large"></div>
+                            <p class="loading-text" id="loadingText">Analyzing property features...</p>
+                            <div class="loading-progress">
+                                <div class="loading-progress-bar" id="progressBar"></div>
+                            </div>
+                            <p class="loading-hint">This usually takes 2-3 seconds</p>
+                        </div>
+                    </div>
+
+                    <!-- Success Result -->
+                    <div id="resultSection" class="result-section hidden">
+                        <div class="result-card success">
+                            <div class="result-badge">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                Success
+                            </div>
+                            <div class="result-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                            </div>
+                            <h3 class="result-label">Predicted Price</h3>
+                            <p id="predictedPrice" class="result-price">₹0</p>
+                            <p class="result-note">Based on Random Forest ML model analysis</p>
+                            <div class="result-actions">
+                                <button type="button" id="tryAnotherBtn" class="btn btn-outline-light">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="1 4 1 10 7 10"></polyline>
+                                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                    </svg>
+                                    Try Another Prediction
+                                </button>
+                                <button type="button" id="shareBtn" class="btn btn-secondary-light">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="18" cy="5" r="3"></circle>
+                                        <circle cx="6" cy="12" r="3"></circle>
+                                        <circle cx="18" cy="19" r="3"></circle>
+                                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                                    </svg>
+                                    Share Result
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Error Result -->
+                    <div id="errorSection" class="error-section hidden">
+                        <div class="result-card error">
+                            <div class="result-badge error">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                Error
+                            </div>
+                            <div class="result-icon error">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                </svg>
+                            </div>
+                            <h3 class="result-label">Prediction Failed</h3>
+                            <p id="errorMessage" class="error-message-text">Something went wrong</p>
+                            <button type="button" id="retryBtn" class="btn btn-outline-error">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                </svg>
+                                Try Again
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Initial State / Instructions -->
+                    <div id="instructionsSection" class="instructions-section">
+                        <div class="instructions-card">
+                            <div class="instructions-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                            </div>
+                            <h3>How to Get Your Prediction</h3>
+                            <ul class="instructions-list">
+                                <li>
+                                    <span class="step-num">1</span>
+                                    Fill in all property details in the form
+                                </li>
+                                <li>
+                                    <span class="step-num">2</span>
+                                    Click the "Predict Price" button
+                                </li>
+                                <li>
+                                    <span class="step-num">3</span>
+                                    Wait 2-3 seconds for the ML model to analyze
+                                </li>
+                                <li>
+                                    <span class="step-num">4</span>
+                                    View your predicted price instantly
+                                </li>
+                            </ul>
+                            <p class="instructions-tip">
+                                <strong>Tip:</strong> Use the "Load Sample Data" button to try a demo prediction!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="footer-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        <span>House Price Predictor</span>
+                    </a>
+                    <p>Smart Property Valuation Powered by Machine Learning</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="predict.html">Predict Price</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal & Info</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="about.html">How It Works</a></li>
+                    </ul>
+                </div>
+                <div class="footer-connect">
+                    <h4>Connect & Tech Stack</h4>
+                    <div class="social-links">
+                        <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                        <a href="https://github.com" target="_blank" aria-label="GitHub">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="mailto:anishansarbasha@gmail.com" aria-label="Email">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="tech-badges">
+                        <span class="tech-badge">🐍 Python</span>
+                        <span class="tech-badge">Flask</span>
+                        <span class="tech-badge">ML</span>
+                        <span class="tech-badge">Random Forest</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Anishfathima A. Academic Project - Nandha Arts And Science College, Erode.</p>
+                <p>Built with ❤️ for education and innovation</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

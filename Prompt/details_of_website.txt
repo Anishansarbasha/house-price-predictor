@@ -1,0 +1,68 @@
+1. Project & Personal Details:
+
+Your full name: Anishfathima A ✓ (already provided)
+Your email: anishansarbasha@gmail.com ✓ (already provided)
+Project title: "House Price Prediction Website Using Machine Learning Model" ✓
+Your LinkedIn profile URL (if you want to include it):
+College/University name (to show in About section): Nandha Arts And Science College Erode - 52
+Your role/title (e.g., "Data Science Student", "ML Developer"):Aspiring Data Scientist
+
+2.Machine Learning Model Details:
+
+ML Algorithm Used: Random Forest Regressor 🌲
+Dataset Source: Tamil Nadu House Price Dataset (custom real-estate dataset)
+Number of Records:1000
+R² Score:0.64
+RMSE: ₹ 3379444.86
+MAE(Mean Absolute Error (₹)): 1879692.03
+Number of Features Used: 18 features
+
+3.Input Features for Prediction Form
+
+Total Square Feet (number)
+Number of Bedrooms (number)
+Number of Bathrooms (number)
+Number of Balconies (number)
+Age of Property (years) (number)
+Distance to Landmark (km) (number)
+Number of Floors (number)
+Location (dropdown)
+Coimbatore
+Erode
+Madurai
+Salem
+Thanjavur
+Thoothukudi
+Tirunelveli
+Trichy
+Vellore
+
+Area Type (dropdown)
+Plot area
+Super built-up
+
+Availability Status (dropdown)
+Ready to move
+Under construction
+Total User Inputs Required: 10 fields
+
+4. Backend Details:
+
+Backend Framework Used: Flask (Python)
+Backend API Endpoint: http://127.0.0.1:5000/predict
+ (Localhost)
+Database Technology: Not connected yet (planned for future integration)
+
+5. Design Preferences:
+
+Preferred Color Scheme: Blue and white with soft gradient accents
+Design Style Choice: Modern and minimalist
+Overall Style Preference: Clean and corporate with a subtle tech feel
+
+6.Additional features:
+
+Include Sample Predictions on Homepage: Yes
+“Try Demo” Button with Pre-filled Data: Yes
+Include Data Visualizations / Charts: Yes (after backend + DB integration)
+Homepage Tagline: “Smart Property Valuation Powered by Machine Learning”
+
