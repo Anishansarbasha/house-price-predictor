@@ -16,14 +16,12 @@ function initNavigation() {
     const navToggle = document.getElementById('navToggle');
     const navMenu = document.getElementById('navMenu');
 
-    // Mobile menu toggle
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', function() {
             navMenu.classList.toggle('active');
             this.classList.toggle('active');
         });
 
-        // Close menu when clicking outside
         document.addEventListener('click', function(e) {
             if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
                 navMenu.classList.remove('active');
@@ -31,7 +29,6 @@ function initNavigation() {
             }
         });
 
-        // Close menu when clicking a link
         navMenu.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
                 navMenu.classList.remove('active');
@@ -40,7 +37,6 @@ function initNavigation() {
         });
     }
 
-    // Scroll effect for navbar
     if (navbar) {
         window.addEventListener('scroll', function() {
             if (window.scrollY > 50) {
@@ -54,16 +50,12 @@ function initNavigation() {
 
 // ==================== SCROLL EFFECTS ====================
 function initScrollEffects() {
-    // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
     });
@@ -81,29 +73,24 @@ function initPredictionForm() {
     const retryBtn = document.getElementById('retryBtn');
     const shareBtn = document.getElementById('shareBtn');
 
-    // API endpoint
-    const API_URL = 'https://house-price-predictor.onrender.com/predict';
+    // ✅ FIXED: API endpoint with /predict
+    const API_URL = 'https://house-price-predictor-ippx.onrender.com/predict';
 
-    // Location options for one-hot encoding
     const locations = [
         'Coimbatore', 'Erode', 'Madurai', 'Salem',
         'Thanjavur', 'Thoothukudi', 'Tirunelveli', 'Trichy', 'Vellore'
     ];
 
-    // Area types for one-hot encoding
     const areaTypes = ['Plot area', 'Super built-up'];
 
-    // Form submission
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
 
-        // Validate form
         if (!validateForm()) {
             showToast('Please fill in all required fields correctly', 'error');
             return;
         }
 
-        // Hide previous results
         hideAllResults();
         showLoading();
 
@@ -111,14 +98,11 @@ function initPredictionForm() {
             const formData = collectFormData();
             const payload = createPayload(formData);
 
-            // Simulate progress
             simulateProgress();
 
             const response = await fetch(API_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
@@ -128,8 +112,7 @@ function initPredictionForm() {
             }
 
             const data = await response.json();
-            
-            // Short delay to show completion
+
             setTimeout(() => {
                 hideLoading();
                 displayResult(data);
@@ -143,12 +126,8 @@ function initPredictionForm() {
         }
     });
 
-    // Load demo data
-    if (loadDemoBtn) {
-        loadDemoBtn.addEventListener('click', loadSampleData);
-    }
+    if (loadDemoBtn) loadDemoBtn.addEventListener('click', loadSampleData);
 
-    // Reset form
     if (resetBtn) {
         resetBtn.addEventListener('click', function() {
             form.reset();
@@ -158,7 +137,6 @@ function initPredictionForm() {
         });
     }
 
-    // Try another prediction
     if (tryAnotherBtn) {
         tryAnotherBtn.addEventListener('click', function() {
             form.reset();
@@ -169,7 +147,6 @@ function initPredictionForm() {
         });
     }
 
-    // Retry on error
     if (retryBtn) {
         retryBtn.addEventListener('click', function() {
             hideAllResults();
@@ -177,18 +154,12 @@ function initPredictionForm() {
         });
     }
 
-    // Share result
     if (shareBtn) {
         shareBtn.addEventListener('click', function() {
             const price = document.getElementById('predictedPrice').textContent;
             const text = `I just predicted a house price of ${price} using the House Price Predictor! Try it yourself.`;
-            
             if (navigator.share) {
-                navigator.share({
-                    title: 'House Price Prediction',
-                    text: text,
-                    url: window.location.href
-                });
+                navigator.share({ title: 'House Price Prediction', text: text, url: window.location.href });
             } else {
                 navigator.clipboard.writeText(text).then(() => {
                     showToast('Result copied to clipboard!', 'success');
@@ -197,23 +168,15 @@ function initPredictionForm() {
         });
     }
 
-    // Real-time validation
     form.querySelectorAll('input, select').forEach(input => {
-        input.addEventListener('blur', function() {
-            validateField(this);
-        });
-
+        input.addEventListener('blur', function() { validateField(this); });
         input.addEventListener('input', function() {
             this.classList.remove('error');
             const errorEl = document.getElementById(this.id + 'Error');
-            if (errorEl) {
-                errorEl.textContent = '';
-                errorEl.classList.remove('show');
-            }
+            if (errorEl) { errorEl.textContent = ''; errorEl.classList.remove('show'); }
         });
     });
 
-    // Helper functions
     function collectFormData() {
         return {
             totalSqft: parseFloat(document.getElementById('totalSqft').value),
@@ -240,17 +203,14 @@ function initPredictionForm() {
             Floors: formData.floors
         };
 
-        // One-hot encode locations
         locations.forEach(location => {
             payload[`Location_${location}`] = formData.location === location ? 1 : 0;
         });
 
-        // One-hot encode area types
         areaTypes.forEach(areaType => {
             payload[`Area_type_${areaType}`] = formData.areaType === areaType ? 1 : 0;
         });
 
-        // One-hot encode availability
         payload['Availability_Under construction'] = formData.availability === 'Under Construction' ? 1 : 0;
 
         return payload;
@@ -258,14 +218,9 @@ function initPredictionForm() {
 
     function validateForm() {
         let isValid = true;
-        const requiredFields = form.querySelectorAll('[required]');
-
-        requiredFields.forEach(field => {
-            if (!validateField(field)) {
-                isValid = false;
-            }
+        form.querySelectorAll('[required]').forEach(field => {
+            if (!validateField(field)) isValid = false;
         });
-
         return isValid;
     }
 
@@ -280,39 +235,25 @@ function initPredictionForm() {
             const numValue = parseFloat(value);
             const min = parseFloat(field.min);
             const max = parseFloat(field.max);
-
-            if (isNaN(numValue)) {
-                errorMessage = 'Please enter a valid number';
-            } else if (min !== undefined && numValue < min) {
-                errorMessage = `Value must be at least ${min}`;
-            } else if (max !== undefined && numValue > max) {
-                errorMessage = `Value must not exceed ${max}`;
-            }
+            if (isNaN(numValue)) errorMessage = 'Please enter a valid number';
+            else if (min !== undefined && numValue < min) errorMessage = `Value must be at least ${min}`;
+            else if (max !== undefined && numValue > max) errorMessage = `Value must not exceed ${max}`;
         }
 
         if (errorMessage) {
             field.classList.add('error');
-            if (errorEl) {
-                errorEl.textContent = '⚠️ ' + errorMessage;
-                errorEl.classList.add('show');
-            }
+            if (errorEl) { errorEl.textContent = '⚠️ ' + errorMessage; errorEl.classList.add('show'); }
             return false;
         } else {
             field.classList.remove('error');
-            if (errorEl) {
-                errorEl.textContent = '';
-                errorEl.classList.remove('show');
-            }
+            if (errorEl) { errorEl.textContent = ''; errorEl.classList.remove('show'); }
             return true;
         }
     }
 
     function clearValidationErrors() {
         form.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
-        form.querySelectorAll('.error-message').forEach(el => {
-            el.textContent = '';
-            el.classList.remove('show');
-        });
+        form.querySelectorAll('.error-message').forEach(el => { el.textContent = ''; el.classList.remove('show'); });
     }
 
     function loadSampleData() {
@@ -326,37 +267,26 @@ function initPredictionForm() {
         document.getElementById('location').value = 'Coimbatore';
         document.getElementById('areaType').value = 'Super built-up';
         document.getElementById('availability').value = 'Ready to Move';
-
         showToast('Sample data loaded! Click "Predict Price" to see results.', 'success');
     }
 
     function showLoading() {
         const loadingSection = document.getElementById('loadingSection');
         const instructionsSection = document.getElementById('instructionsSection');
-        
         if (instructionsSection) instructionsSection.classList.add('hidden');
         if (loadingSection) loadingSection.classList.remove('hidden');
-
-        if (submitBtn) {
-            submitBtn.classList.add('loading');
-            submitBtn.disabled = true;
-        }
+        if (submitBtn) { submitBtn.classList.add('loading'); submitBtn.disabled = true; }
     }
 
     function hideLoading() {
         const loadingSection = document.getElementById('loadingSection');
         if (loadingSection) loadingSection.classList.add('hidden');
-
-        if (submitBtn) {
-            submitBtn.classList.remove('loading');
-            submitBtn.disabled = false;
-        }
+        if (submitBtn) { submitBtn.classList.remove('loading'); submitBtn.disabled = false; }
     }
 
     function simulateProgress() {
         const progressBar = document.getElementById('progressBar');
         const loadingText = document.getElementById('loadingText');
-        
         if (!progressBar || !loadingText) return;
 
         const messages = [
@@ -381,7 +311,6 @@ function initPredictionForm() {
     function displayResult(data) {
         const resultSection = document.getElementById('resultSection');
         const predictedPrice = document.getElementById('predictedPrice');
-
         if (!resultSection || !predictedPrice) return;
 
         let price = data.predicted_price || data.prediction || data.price || data;
@@ -389,24 +318,19 @@ function initPredictionForm() {
 
         predictedPrice.textContent = formatIndianRupees(price);
         resultSection.classList.remove('hidden');
-
-        // Scroll to result
         resultSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     function displayError(message) {
         const errorSection = document.getElementById('errorSection');
         const errorMessage = document.getElementById('errorMessage');
-
         if (!errorSection || !errorMessage) return;
-
         errorMessage.textContent = getErrorMessage(message);
         errorSection.classList.remove('hidden');
     }
 
     function hideAllResults() {
-        const sections = ['loadingSection', 'resultSection', 'errorSection', 'instructionsSection'];
-        sections.forEach(id => {
+        ['loadingSection', 'resultSection', 'errorSection', 'instructionsSection'].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.classList.add('hidden');
         });
@@ -434,27 +358,21 @@ function initPredictionForm() {
 // ==================== FORMAT CURRENCY ====================
 function formatIndianRupees(amount) {
     const num = typeof amount === 'string' ? parseFloat(amount) : amount;
-    const roundedAmount = Math.round(num);
-
     return new Intl.NumberFormat('en-IN', {
         style: 'currency',
         currency: 'INR',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
-    }).format(roundedAmount);
+    }).format(Math.round(num));
 }
 
 // ==================== DEMO MODE ====================
 function initDemoMode() {
-    // Check if demo mode is requested via URL
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('demo') === 'true') {
-        // Wait for form to load
         setTimeout(() => {
             const loadDemoBtn = document.getElementById('loadDemoBtn');
-            if (loadDemoBtn) {
-                loadDemoBtn.click();
-            }
+            if (loadDemoBtn) loadDemoBtn.click();
         }, 500);
     }
 }
@@ -467,21 +385,46 @@ function initContactForm() {
     const successDiv = document.getElementById('contactSuccess');
     const sendAnotherBtn = document.getElementById('sendAnotherBtn');
 
-    form.addEventListener('submit', function(e) {
+    // ✅ FIXED: Actually sends to Flask backend
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
 
-        // Simulate form submission
         const submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.classList.add('loading');
-        submitBtn.disabled = true;
+        const btnText = submitBtn.querySelector('.btn-text');
 
-        setTimeout(() => {
-            form.classList.add('hidden');
-            if (successDiv) successDiv.classList.remove('hidden');
-            submitBtn.classList.remove('loading');
+        submitBtn.disabled = true;
+        if (btnText) btnText.textContent = 'Sending...';
+
+        const formData = {
+            name   : document.getElementById('contactName').value.trim(),
+            email  : document.getElementById('contactEmail').value.trim(),
+            subject: document.getElementById('contactSubject').value,
+            message: document.getElementById('contactMessage').value.trim()
+        };
+
+        try {
+            const response = await fetch('https://house-price-predictor-ippx.onrender.com/contact', {
+                method : 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body   : JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                form.classList.add('hidden');
+                if (successDiv) successDiv.classList.remove('hidden');
+                showToast('✅ Message sent successfully!', 'success');
+            } else {
+                alert('Something went wrong: ' + result.error);
+                submitBtn.disabled = false;
+                if (btnText) btnText.textContent = 'Send Message';
+            }
+        } catch (error) {
+            alert('Failed to send message. Please try again.');
             submitBtn.disabled = false;
-            showToast('✅ Thank you! Your message has been received.', 'success');
-        }, 1500);
+            if (btnText) btnText.textContent = 'Send Message';
+        }
     });
 
     if (sendAnotherBtn) {
@@ -502,27 +445,52 @@ function initFeedback() {
 
     if (!feedbackBtns.length) return;
 
+    let selectedFeedback = null;
+
     feedbackBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            // Remove selected from all buttons
             feedbackBtns.forEach(b => b.classList.remove('selected'));
-            // Add selected to clicked button
             this.classList.add('selected');
-            // Show comment box
+            selectedFeedback = this.dataset.feedback;
             if (feedbackComment) feedbackComment.classList.remove('hidden');
         });
     });
 
     if (submitFeedbackBtn) {
-        submitFeedbackBtn.addEventListener('click', function() {
-            if (feedbackComment) feedbackComment.classList.add('hidden');
-            if (feedbackThanks) feedbackThanks.classList.remove('hidden');
-            
-            // Hide feedback buttons
-            const feedbackButtons = document.querySelector('.feedback-buttons');
-            if (feedbackButtons) feedbackButtons.classList.add('hidden');
+        submitFeedbackBtn.addEventListener('click', async function() {
+            const feedbackText = document.getElementById('feedbackText').value.trim();
 
-            showToast('Thank you for your feedback! 🎉', 'success');
+            submitFeedbackBtn.disabled = true;
+            submitFeedbackBtn.textContent = 'Submitting...';
+
+            try {
+                const response = await fetch('https://house-price-predictor-ippx.onrender.com/feedback', {
+                    method : 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body   : JSON.stringify({
+                        feedback: selectedFeedback,
+                        text    : feedbackText || 'No additional comment.'
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    if (feedbackComment) feedbackComment.classList.add('hidden');
+                    if (feedbackThanks) feedbackThanks.classList.remove('hidden');
+                    const feedbackButtons = document.querySelector('.feedback-buttons');
+                    if (feedbackButtons) feedbackButtons.classList.add('hidden');
+                    showToast('Thank you for your feedback! 🎉', 'success');
+                } else {
+                    alert('Could not submit feedback: ' + result.error);
+                    submitFeedbackBtn.disabled = false;
+                    submitFeedbackBtn.textContent = 'Submit Feedback';
+                }
+            } catch (error) {
+                alert('Failed to submit feedback. Please try again.');
+                submitFeedbackBtn.disabled = false;
+                submitFeedbackBtn.textContent = 'Submit Feedback';
+            }
         });
     }
 }
@@ -554,7 +522,6 @@ function showToast(message, type = 'success') {
 
     container.appendChild(toast);
 
-    // Auto remove after 5 seconds
     setTimeout(() => {
         toast.style.animation = 'slideOut 0.3s ease-out forwards';
         setTimeout(() => toast.remove(), 300);
@@ -562,165 +529,44 @@ function showToast(message, type = 'success') {
 }
 
 // ==================== UTILITY FUNCTIONS ====================
-// Debounce function for performance
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
+        const later = () => { clearTimeout(timeout); func(...args); };
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     };
 }
 
-// Check if element is in viewport
 function isInViewport(element) {
     const rect = element.getBoundingClientRect();
     return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
+        rect.top >= 0 && rect.left >= 0 &&
         rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
         rect.right <= (window.innerWidth || document.documentElement.clientWidth)
     );
 }
 
-// Animate numbers on scroll
 function animateNumbers() {
     const numbers = document.querySelectorAll('[data-count]');
-    
     numbers.forEach(number => {
         if (isInViewport(number) && !number.classList.contains('animated')) {
             number.classList.add('animated');
             const target = parseInt(number.dataset.count);
             const duration = 2000;
-            const start = 0;
             const startTime = performance.now();
 
             function updateNumber(currentTime) {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                const current = Math.floor(progress * (target - start) + start);
-                
+                const current = Math.floor(progress * target);
                 number.textContent = current.toLocaleString() + (target >= 1000 ? '+' : '');
-                
-                if (progress < 1) {
-                    requestAnimationFrame(updateNumber);
-                }
+                if (progress < 1) requestAnimationFrame(updateNumber);
             }
-
             requestAnimationFrame(updateNumber);
         }
     });
 }
 
-// Initialize number animation on scroll
 window.addEventListener('scroll', debounce(animateNumbers, 100));
 window.addEventListener('load', animateNumbers);
-// ── Contact Form ─────────────────────────────────────────────
-const contactForm = document.getElementById('contactForm');
-const contactSuccess = document.getElementById('contactSuccess');
-const sendAnotherBtn = document.getElementById('sendAnotherBtn');
-
-if (contactForm) {
-    contactForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const btnText   = submitBtn.querySelector('.btn-text');
-
-        submitBtn.disabled = true;
-        btnText.textContent = 'Sending...';
-
-        const formData = {
-            name   : document.getElementById('contactName').value.trim(),
-            email  : document.getElementById('contactEmail').value.trim(),
-            subject: document.getElementById('contactSubject').value,
-            message: document.getElementById('contactMessage').value.trim()
-        };
-
-        try {
-            const response = await fetch('https://house-price-predictor.onrender.com/contact', {
-                method : 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body   : JSON.stringify(formData)
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                contactForm.classList.add('hidden');
-                contactSuccess.classList.remove('hidden');
-            } else {
-                alert('Something went wrong: ' + result.error);
-                submitBtn.disabled = false;
-                btnText.textContent = 'Send Message';
-            }
-        } catch (error) {
-            alert('Failed to send message. Please try again.');
-            submitBtn.disabled = false;
-            btnText.textContent = 'Send Message';
-        }
-    });
-}
-
-if (sendAnotherBtn) {
-    sendAnotherBtn.addEventListener('click', function () {
-        contactForm.reset();
-        contactForm.classList.remove('hidden');
-        contactSuccess.classList.add('hidden');
-    });
-}
-
-// ── Quick Feedback Buttons ────────────────────────────────────
-const feedbackBtns      = document.querySelectorAll('.feedback-btn');
-const feedbackComment   = document.getElementById('feedbackComment');
-const submitFeedbackBtn = document.getElementById('submitFeedbackBtn');
-const feedbackThanks    = document.getElementById('feedbackThanks');
-
-let selectedFeedback = null;
-
-feedbackBtns.forEach(btn => {
-    btn.addEventListener('click', function () {
-        feedbackBtns.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        selectedFeedback = this.dataset.feedback;
-        feedbackComment.classList.remove('hidden');
-    });
-});
-
-if (submitFeedbackBtn) {
-    submitFeedbackBtn.addEventListener('click', async function () {
-        const feedbackText = document.getElementById('feedbackText').value.trim();
-
-        submitFeedbackBtn.disabled = true;
-        submitFeedbackBtn.textContent = 'Submitting...';
-
-        try {
-            const response = await fetch('https://house-price-predictor.onrender.com/feedback', {
-                method : 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body   : JSON.stringify({
-                    feedback: selectedFeedback,
-                    text    : feedbackText || 'No additional comment.'
-                })
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                feedbackComment.classList.add('hidden');
-                feedbackThanks.classList.remove('hidden');
-            } else {
-                alert('Could not submit feedback: ' + result.error);
-                submitFeedbackBtn.disabled = false;
-                submitFeedbackBtn.textContent = 'Submit Feedback';
-            }
-        } catch (error) {
-            alert('Failed to submit feedback. Please try again.');
-            submitFeedbackBtn.disabled = false;
-            submitFeedbackBtn.textContent = 'Submit Feedback';
-        }
-    });
-}
