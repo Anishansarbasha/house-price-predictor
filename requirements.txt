@@ -1,6 +1,6 @@
 flask
 flask-cors
 flask-mail
-numpy==1.26.4
+numpy==2.3.5
 scikit-learn==1.7.2
 gunicorn
