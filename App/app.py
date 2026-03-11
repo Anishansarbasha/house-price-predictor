@@ -1,24 +1,14 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-from flask_mail import Mail, Message
 import pickle
 import numpy as np
 import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__, static_folder='../UI', static_url_path='')
 CORS(app)
-
-# ============================================================
-#  EMAIL CONFIGURATION (Gmail)
-# ============================================================
-app.config['MAIL_SERVER']         = 'smtp.gmail.com'
-app.config['MAIL_PORT']           = 465
-app.config['MAIL_USE_TLS']        = False
-app.config['MAIL_USE_SSL']        = True
-app.config['MAIL_USERNAME']       = 'anishansarbasha@gmail.com'
-app.config['MAIL_PASSWORD']       = os.environ.get('MAIL_PASSWORD', '')
-app.config['MAIL_DEFAULT_SENDER'] = 'anishansarbasha@gmail.com'
-mail = Mail(app)
 
 # ============================================================
 #  LOAD ML MODEL FILES
@@ -71,6 +61,29 @@ def predict():
 
 
 # ============================================================
+#  HELPER - SEND EMAIL
+# ============================================================
+def send_email(subject, body):
+    try:
+        gmail_user     = 'anishansarbasha@gmail.com'
+        gmail_password = os.environ.get('MAIL_PASSWORD', '')
+
+        msg = MIMEMultipart()
+        msg['From']    = gmail_user
+        msg['To']      = gmail_user
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            server.login(gmail_user, gmail_password)
+            server.sendmail(gmail_user, gmail_user, msg.as_string())
+
+        return True
+    except Exception as e:
+        raise Exception(str(e))
+
+
+# ============================================================
 #  CONTACT FORM ROUTE
 # ============================================================
 @app.route('/contact', methods=['POST'])
@@ -117,13 +130,10 @@ You can reply directly to: {sender_email}
 - House Price Predictor Contact Form
         """
 
-        msg = Message(
-            subject    = f"[House Price Predictor] New {subject_label} from {sender_name}",
-            recipients = ['anishansarbasha@gmail.com'],
-            body       = email_body,
-            reply_to   = sender_email
+        send_email(
+            subject = f"[House Price Predictor] New {subject_label} from {sender_name}",
+            body    = email_body
         )
-        mail.send(msg)
 
         return jsonify({"success": True, "message": "Your message has been sent successfully!"}), 200
 
@@ -164,12 +174,10 @@ COMMENT:
 - House Price Predictor Feedback Form
         """
 
-        msg = Message(
-            subject    = f"[House Price Predictor] New Feedback: {feedback_label}",
-            recipients = ['anishansarbasha@gmail.com'],
-            body       = email_body
+        send_email(
+            subject = f"[House Price Predictor] New Feedback: {feedback_label}",
+            body    = email_body
         )
-        mail.send(msg)
 
         return jsonify({"success": True}), 200
 
